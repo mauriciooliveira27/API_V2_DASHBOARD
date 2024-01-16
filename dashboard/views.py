@@ -1,6 +1,6 @@
 from rest_framework import generics
 from .models import DashBoard
-from .serializers import DashBoardSerializer, GroupSerializer, UserSerializer
+from .serializers import DashBoardSerializer
 from django.contrib.auth.models import User, Group
 from rest_framework import permissions, viewsets, status
 from rest_framework.views import APIView
@@ -38,7 +38,7 @@ class TimeZoneHourAPIView(APIView):
 
         # Obtendo dados da última hora
         last_hour               =       timezone.now() - timedelta(hours=hour)
-        data_last_hour          =       DashBoard.objects.filter(data__gte=last_hour)
+        data_last_hour          =       DashBoard.objects.filter(create__gte=last_hour)
         serializer_last_hour    =       DashBoardSerializer(data_last_hour, many=True)
 
         # Você pode adicionar lógica semelhante para a última semana e o último mês
@@ -63,7 +63,7 @@ class TimeZoneDayAPIView(APIView):
                             }, status=status.HTTP_400_BAD_REQUEST)
         
         last_day            =       timezone.now() - timedelta(days=day)
-        data_last_day       =       DashBoard.objects.filter(data__gte = last_day)
+        data_last_day       =       DashBoard.objects.filter(create__gte = last_day)
         serializer_last_day =       DashBoardSerializer(data_last_day, many = True)
 
         return Response({
@@ -89,7 +89,7 @@ class TimeZoneWeekAPIView(APIView):
                             }, status=status.HTTP_400_BAD_REQUEST)
 
         last_weeks              =           timezone.now() - timedelta(weeks=week)
-        data_last_weeks         =           DashBoard.objects.filter(data__gte = last_weeks)
+        data_last_weeks         =           DashBoard.objects.filter(create__gte = last_weeks)
         serializer_last_weeks   =           DashBoardSerializer(data_last_weeks , many = True)
 
         return Response({
@@ -97,15 +97,3 @@ class TimeZoneWeekAPIView(APIView):
                             'ultima_semana':serializer_last_weeks.data,
 
                         },  status=status.HTTP_202_ACCEPTED)
-    
-
-
-
-
-
-
-#KW / Ton
-    
-
-    #pena = KW 
-    #pena = peso_acum+
